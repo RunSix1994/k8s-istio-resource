@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: middleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: tier
+                    operator: In
+                    values:
+                      - middleware
+      containers:
+        - name: zookeeper
+          image: zookeeper:3.6.1
+          ports:
+            - containerPort: 2181
+          volumeMounts:
+            - mountPath: /data
+              name: zookeeper-volume
+      volumes:
+        - name: zookeeper-volume
+          gcePersistentDisk:
+            pdName: zookeeper

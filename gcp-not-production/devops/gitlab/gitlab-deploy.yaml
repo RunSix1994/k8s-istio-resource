@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab
+  namespace: devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: tier
+                    operator: In
+                    values:
+                      - devops
+      containers:
+        - name: gitlab
+          image: gitlab/gitlab-ce:13.0.9-ce.0
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: gitlab-volume
+              mountPath: /var/opt/gitlab
+              subPath: data
+            - name: gitlab-volume
+              mountPath: /var/log/gitlab
+              subPath: logs
+            - name: gitlab-conf
+              mountPath: /etc/gitlab/gitlab.rb
+              subPath: gitlab.rb
+      volumes:
+        - name: gitlab-volume
+          gcePersistentDisk:
+            pdName: gitlab
+        - name: gitlab-conf
+          configMap:
+            name: gitlab

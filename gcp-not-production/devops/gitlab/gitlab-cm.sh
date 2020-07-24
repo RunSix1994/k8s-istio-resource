@@ -1,0 +1,1 @@
+kubectl -n=devops create cm gitlab --from-file=gitlab.rb

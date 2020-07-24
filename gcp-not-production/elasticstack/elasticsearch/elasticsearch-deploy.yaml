@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: elasticstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: tier
+                    operator: In
+                    values:
+                      - elasticstack
+      containers:
+        - name: elasticsearch
+          image: elasticsearch:7.8.0
+          ports:
+            - containerPort: 9200
+#            - containerPort: 9300
+          env:
+            - name: discovery.type
+              value: single-node
+          volumeMounts:
+            - name: elasticsearch-volume
+              mountPath: /usr/share/elasticsearch/data
+              subPath: data
+            - name: elasticsearch-volume
+              mountPath: /usr/share/elasticsearch/logs
+              subPath: logs
+            - name: elasticsearch-conf
+              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+              subPath: elasticsearch.yml
+      volumes:
+        - name: elasticsearch-conf
+          configMap:
+            name: elasticsearch
+            items:
+              - key: elasticsearch.yml
+                path: elasticsearch.yml
+        - name: elasticsearch-volume
+          gcePersistentDisk:
+            pdName: elasticsearch

@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: gitlab
+  namespace: devops
+spec:
+  hosts:
+  - "gitlab.runsix.app"
+  gateways:
+  - istio.default.svc.cluster.local
+  http:
+  - name: "gitlab"
+    route:
+      - destination:
+          host: gitlab.devops.svc.cluster.local

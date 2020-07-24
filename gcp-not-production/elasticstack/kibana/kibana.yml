@@ -1,0 +1,3 @@
+elasticsearch.hosts: ["https://elasticsearch.runsix.app"]
+server.host: "0.0.0.0"
+i18n.locale: "zh-CN"

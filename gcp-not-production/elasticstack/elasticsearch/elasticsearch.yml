@@ -1,0 +1,7 @@
+path.data: /usr/share/elasticsearch/data
+path.logs: /usr/share/elasticsearch/logs
+network.host: 0.0.0.0
+bootstrap.memory_lock: false
+bootstrap.system_call_filter: false
+http.cors.enabled: true
+http.cors.allow-origin: "*"

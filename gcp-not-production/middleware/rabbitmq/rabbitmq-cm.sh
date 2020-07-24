@@ -1,0 +1,1 @@
+kubectl -n=middleware create cm rabbitmq --from-file=.erlang.cookie

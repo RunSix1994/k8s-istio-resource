@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: elasticstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: tier
+                    operator: In
+                    values:
+                      - elasticstack
+      containers:
+        - name: kibana
+          image: kibana:7.8.0
+          ports:
+            - containerPort: 5601
+          volumeMounts:
+            - name: kibana-volume
+              mountPath: /usr/share/kibana/data
+              subPath: data
+            - name: kibana-volume
+              mountPath: /usr/share/kibana/logs
+              subPath: logs
+            - name: kibana-conf
+              mountPath: /usr/share/kibana/config/kibana.yml
+              subPath: kibana.yml
+      volumes:
+        - name: kibana-conf
+          configMap:
+            name: kibana
+            items:
+              - key: kibana.yml
+                path: kibana.yml
+        - name: kibana-volume
+          gcePersistentDisk:
+            pdName: kibana

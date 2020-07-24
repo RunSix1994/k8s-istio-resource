@@ -1,0 +1,1 @@
+kubectl -n=elasticstack create cm elasticsearch --from-file=elasticsearch.yml

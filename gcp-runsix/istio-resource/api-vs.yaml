@@ -1,0 +1,40 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api
+spec:
+  hosts:
+    - "api.runsix.app"
+  gateways:
+    - istio.default.svc.cluster.local
+  http:
+    - match:
+      - uri:
+          prefix: "/oauth"
+      route:
+      - destination:
+          host: rs-svc-authserver.default.svc.cluster.local
+    - match:
+      - uri:
+          prefix: "/user"
+      route:
+      - destination:
+          host: rs-svc-user.default.svc.cluster.local
+    - match:
+      - uri:
+          prefix: "/thought"
+      route:
+      - destination:
+          host: rs-svc-thought.default.svc.cluster.local
+    - match:
+      - uri:
+          prefix: "/blog"
+      route:
+      - destination:
+          host: rs-svc-blog.default.svc.cluster.local
+    - match:
+      - uri:
+          prefix: "/comment"
+      route:
+      - destination:
+          host: rs-svc-comment.default.svc.cluster.local

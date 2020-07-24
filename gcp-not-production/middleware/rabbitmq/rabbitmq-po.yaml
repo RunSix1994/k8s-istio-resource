@@ -1,0 +1,54 @@
+# 因为data是存储在/var/lib/rabbitmq/mnesia/rabbit@node的hostname，所以不用deploy，用po
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rabbitmq
+  namespace: middleware
+  labels:
+    app: rabbitmq
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                  - middleware
+  containers:
+    - name: rabbitmq
+      image: rabbitmq:3.8.5-management
+      ports:
+        - containerPort: 5672
+        - containerPort: 15672
+      env:
+        # 必须以环境变量形式注入.erlang.cookie，否则有权限问题。如果不注入.erlang.cookie，重启po会报错
+        - name: RABBITMQ_ERLANG_COOKIE
+          valueFrom:
+            configMapKeyRef:
+              name: rabbitmq
+              key: .erlang.cookie
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            secretKeyRef:
+              key: admin_username
+              name: rabbitmq
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              key: admin_password
+              name: rabbitmq
+      volumeMounts:
+        - name: rabbitmq-volume
+          mountPath: /var/lib/rabbitmq
+#        - name: rabbitmq-conf
+#          mountPath: /etc/rabbitmq
+  volumes:
+    - name: rabbitmq-volume
+      gcePersistentDisk:
+        pdName: rabbitmq
+#    - name: rabbitmq-conf
+#      configMap:
+#        name: rabbitmq
+

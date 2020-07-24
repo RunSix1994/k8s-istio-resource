@@ -1,0 +1,1 @@
+kubectl -n=database create cm redis --from-file=redis.conf
