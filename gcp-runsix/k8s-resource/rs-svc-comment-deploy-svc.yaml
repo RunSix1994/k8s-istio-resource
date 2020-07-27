@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rs-svc-comment
+  name: rs-svc-comment-v1
   labels:
     app: rs-svc-comment
     version: v1
@@ -10,10 +10,12 @@ spec:
   selector:
     matchLabels:
       app: rs-svc-comment
+      version: v1
   template:
     metadata:
       labels:
         app: rs-svc-comment
+        version: v1
     spec:
       affinity:
         nodeAffinity:

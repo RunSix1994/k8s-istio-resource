@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rs-svc-blog
+  name: rs-svc-blog-v1
   labels:
     app: rs-svc-blog
     version: v1
@@ -10,10 +10,12 @@ spec:
   selector:
     matchLabels:
       app: rs-svc-blog
+      version: v1
   template:
     metadata:
       labels:
         app: rs-svc-blog
+        version: v1
     spec:
       affinity:
         nodeAffinity:

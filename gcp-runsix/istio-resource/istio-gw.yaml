@@ -7,18 +7,13 @@ spec:
     app: istio-ingressgateway
   servers:
     - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - "*"
-    - port:
         number: 443
         name: https-443
         protocol: HTTPS
       hosts:
-        - "*"
+        - runsix.app
+        - *.runsix.app
       tls:
-        mode: SIMPLE # enables HTTPS on this port
-        serverCertificate: /etc/istio/ingressgateway-certs/tls.crt #固定名称，不能改
-        privateKey: /etc/istio/ingressgateway-certs/tls.key #固定名称，不能
+        mode: SIMPLE
+        serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+        privateKey: /etc/istio/ingressgateway-certs/tls.key
