@@ -21,6 +21,24 @@ spec:
       attempts: 3
       perTryTimeout: 2s
       retryOn: gateway-error,connect-failure,refused-stream
+    corsPolicy:
+      # 注意是allowOrigins，而不是allowOrigin，官方文档有错误
+      allowOrigins:
+        # ".*"表示匹配所有,这是特殊的正则表达式 https://github.com/google/re2/wiki/Syntax
+        - regex: ".*"
+      allowHeaders:
+        - Authorization
+        - Content-Type
+        - Idempotence
+      allowMethods:
+        - POST
+        - DELETE
+        - PUT
+        - GET
+        - HEAD
+        - OPTIONS
+        - PATCH
+      allowCredentials: true
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
