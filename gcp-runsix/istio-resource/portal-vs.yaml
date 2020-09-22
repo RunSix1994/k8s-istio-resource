@@ -4,9 +4,9 @@ metadata:
   name: portal
 spec:
   hosts:
-    - "runsix.app"
+  -  runsix.app
   gateways:
-    - istio.default.svc.cluster.local
+  -  istio.default.svc.cluster.local
   http:
     - name: "portal"
       route:

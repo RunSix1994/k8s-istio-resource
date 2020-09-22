@@ -39,6 +39,7 @@ metadata:
   name: cms
 spec:
   ports:
-    - port: 80
+    - name: http-cms
+      port: 80
   selector:
     app: cms

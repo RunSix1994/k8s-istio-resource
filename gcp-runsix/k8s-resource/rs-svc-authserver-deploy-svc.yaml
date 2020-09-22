@@ -39,7 +39,8 @@ metadata:
   name: rs-svc-authserver
 spec:
   ports:
-    - port: 80
+    - name: http-rs-svc-authserver
+      port: 80
       targetPort: 8080
   selector:
     app: rs-svc-authserver

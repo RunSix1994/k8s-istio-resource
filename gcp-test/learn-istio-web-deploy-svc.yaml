@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rs-svc-user-v1
+  name: learn-istio-web-v1
   labels:
-    app: rs-svc-user
+    app: learn-istio-web
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rs-svc-user
+      app: learn-istio-web
       version: v1
   template:
     metadata:
       labels:
-        app: rs-svc-user
+        app: learn-istio-web
         version: v1
     spec:
       affinity:
@@ -27,8 +27,8 @@ spec:
                     values:
                       - backend
       containers:
-        - name: rs-svc-user
-          image: runsix1994/rs-svc-user:0.0.1-SNAPSHOT
+        - name: learn-istio-web
+          image: runsix1994/learn-istio-web:0.0.1-SNAPSHOT
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -36,11 +36,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rs-svc-user
+  name: learn-istio-web
 spec:
   ports:
-    - name: http-rs-svc-user
+    - name: http-learn-istio-web
       port: 80
       targetPort: 8080
   selector:
-    app: rs-svc-user
+    app: learn-istio-web

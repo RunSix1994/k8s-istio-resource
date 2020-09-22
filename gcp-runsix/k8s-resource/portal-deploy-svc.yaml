@@ -39,6 +39,7 @@ metadata:
   name: portal
 spec:
   ports:
-    - port: 80
+    - name: http-portal
+      port: 80
   selector:
     app: portal

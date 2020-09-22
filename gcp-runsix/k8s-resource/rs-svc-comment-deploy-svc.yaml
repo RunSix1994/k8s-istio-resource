@@ -39,7 +39,8 @@ metadata:
   name: rs-svc-comment
 spec:
   ports:
-    - port: 80
+    - name: http-rs-svc-comment
+      port: 80
       targetPort: 8080
   selector:
     app: rs-svc-comment

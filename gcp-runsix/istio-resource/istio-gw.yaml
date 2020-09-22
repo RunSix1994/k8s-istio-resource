@@ -12,7 +12,7 @@ spec:
         protocol: HTTPS
       hosts:
         - runsix.app
-        - *.runsix.app
+        - "*.runsix.app"
       tls:
         mode: SIMPLE
         serverCertificate: /etc/istio/ingressgateway-certs/tls.crt

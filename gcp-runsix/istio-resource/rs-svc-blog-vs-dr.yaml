@@ -3,8 +3,10 @@ kind: VirtualService
 metadata:
   name: rs-svc-blog
 spec:
-  hosts: "api.runsix.app"
-  gateways: istio.default.svc.cluster.local
+  hosts:
+  -  api.runsix.app
+  gateways:
+  -  istio.default.svc.cluster.local
   http:
   - match:
     - uri:

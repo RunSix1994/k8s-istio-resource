@@ -39,7 +39,8 @@ metadata:
   name: rs-svc-blog
 spec:
   ports:
-    - port: 80
+    - name: http-rs-svc-blog
+      port: 80
       targetPort: 8080
   selector:
     app: rs-svc-blog

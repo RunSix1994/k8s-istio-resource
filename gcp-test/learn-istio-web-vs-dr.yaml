@@ -1,0 +1,70 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: learn-istio-web
+spec:
+  hosts:
+  -  api.runsix.app
+  gateways:
+  -  istio
+  http:
+  - match:
+    - uri:
+        prefix: "/istio"
+    route:
+    - destination:
+        host: learn-istio-web.default.svc.cluster.local
+        subset: v1
+      weight: 100
+    fault:
+      abort:
+        percentage:
+          value: 100
+        httpStatus: 503
+    timeout: 15s
+    retries:
+      attempts: 3
+      perTryTimeout: 15s
+      retryOn: gateway-error,connect-failure,refused-stream
+    corsPolicy:
+      # 注意是allowOrigins，而不是allowOrigin，官方文档有错误
+      allowOrigins:
+      # ".*"表示匹配所有,这是特殊的正则表达式 https://github.com/google/re2/wiki/Syntax
+      - regex: ".*"
+      allowHeaders:
+      - Authorization
+      - Content-Type
+      allowMethods:
+      - POST
+      - DELETE
+      - PUT
+      - GET
+      - HEAD
+      - OPTIONS
+      - PATCH
+      allowCredentials: true
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: learn-istio-web
+spec:
+  host: learn-istio-web.default.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      tcp:
+        maxConnections: 50
+    outlierDetection:
+      consecutiveErrors: 50
+      interval: 15s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 100
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN

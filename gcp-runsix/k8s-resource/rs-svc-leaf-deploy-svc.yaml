@@ -39,7 +39,8 @@ metadata:
   name: rs-svc-leaf
 spec:
   ports:
-    - port: 80
+    - name: http-rs-svc-leaf
+      port: 80
       targetPort: 8080
   selector:
     app: rs-svc-leaf

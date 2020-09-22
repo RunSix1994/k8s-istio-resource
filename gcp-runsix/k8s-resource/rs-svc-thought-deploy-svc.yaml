@@ -39,7 +39,8 @@ metadata:
   name: rs-svc-thought
 spec:
   ports:
-    - port: 80
+    - name: http-rs-svc-thought
+      port: 80
       targetPort: 8080
   selector:
     app: rs-svc-thought
